@@ -26,6 +26,12 @@ function factorial(n) {
 function rmSq(n) {
   return n ** .5;
 }
+function to_dis_porcent(dis, bse) {
+  const v_dis_dec = Number(dis) / 100;
+  const v_dis_real = Number(bse) * v_dis_dec;
+  const v_dis_final = Number(bse) - v_dis_real;
+  return v_dis_final;
+}
 function clearDis() {
   display.value = '';
 }
@@ -79,15 +85,30 @@ function myFuncRmDis(toS, rgx, toS_N) {
   // console.log(nameStr);
   return nameStr;
 }
+function to_m_discont(content) {
+  if (vNum(content, /\d+%of\d+/g) != null) {
+    let _dig = vNum(content, /\d+/g);
+    // console.log(_dig);
+    let [discont, base] = _dig;
+    content = to_dis_porcent(discont, base);
+    // console.log(content);
+  }
+  // console.log(content);
+  return content;
+}
 function equalDis() {
-  let contentDis = display.value;
+  let contentDis = display.value, to_dis = 0;
   // let numSqrt = vNum(contentDis, /√\d+/g).map(x => x.replace('√', ''));
   // numSqrt = numSqrt.map(x => Math.sqrt(x));
   // console.log(numSqrt);
+  to_dis = to_m_discont(contentDis);
+  // console.log(to_dis);
   // console.log(contentDis);
   contentDis = contentDis.replaceAll(/÷/g, '/');
   contentDis = contentDis.replaceAll(/x/g, '*');
   contentDis = contentDis.replaceAll(/²/g, '**2');
+  contentDis = contentDis.replaceAll(/\d+%of\d+/g, to_dis);
+  // contentDis = to_m_discont(contentDis);
   //toSqrt = myFuncReplDis(contentDis, /√/g, '**.5');
   //console.log(toSqrt);
   // console.log(vNum(contentDis, /√\d+/g));
