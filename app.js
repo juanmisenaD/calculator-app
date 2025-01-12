@@ -23,6 +23,9 @@ function factorial(n) {
     return n * factorial(n -1);
   }
 }
+function rmSq(n) {
+  return n ** .5;
+}
 function clearDis() {
   display.value = '';
 }
@@ -48,16 +51,36 @@ function myFuncReplDis(dis, str, str2) {
   let txt = myFuncRem(mathStr, longStr, arrRplV);
   return txt;
 }
+function myFuncStrToSq(to_string) {
+  let arrEle = vNum(to_string, /\√\d+/g);
+  // console.log(arrEle);
+  let cpyEle = vNum(to_string, /\√\d+/g);
+  let _arr = myFuncRem(arrEle, /\√/g, 'rmSq(');
+  // console.log(_arr);
+  // myFuncRmDis(to_string, cpyEle, _arr);
+  let _s = myFuncRmDis(to_string, cpyEle, _arr);
+  return _s;
+}
 function myFuncRem(toStr, sch, rm) {
-  let nameStr = toStr;
-  for (let i = 0; i < sch.length; i++) {
-    nameStr = nameStr.replace(sch[i], rm[i]);
+  for (let i = 0; i < toStr.length; i++) {
+    toStr[i] = toStr[i].replace(sch, rm);
+    toStr[i] = toStr[i].padEnd(toStr[i].length+1, ')');
   }
+  return toStr;
+}
+function myFuncRmDis(toS, rgx, toS_N) {
+  let nameStr = toS;
+  // console.log(nameStr);
+  // console.log(rgx);
+  // console.log(toS_N);
+  for (let i = 0; i < rgx.length; i++) {
+    nameStr = nameStr.replace(rgx[i], toS_N[i]);
+  }
+  // console.log(nameStr);
   return nameStr;
 }
 function equalDis() {
   let contentDis = display.value;
-  let toSqrt = '';
   // let numSqrt = vNum(contentDis, /√\d+/g).map(x => x.replace('√', ''));
   // numSqrt = numSqrt.map(x => Math.sqrt(x));
   // console.log(numSqrt);
@@ -65,10 +88,16 @@ function equalDis() {
   contentDis = contentDis.replaceAll(/÷/g, '/');
   contentDis = contentDis.replaceAll(/x/g, '*');
   contentDis = contentDis.replaceAll(/²/g, '**2');
-  toSqrt = myFuncReplDis(contentDis, /√/g, '**.5');
-  contentDis = toSqrt;
+  //toSqrt = myFuncReplDis(contentDis, /√/g, '**.5');
+  //console.log(toSqrt);
+  // console.log(vNum(contentDis, /√\d+/g));
   // console.log(contentDis);
-  // console.log(toSqrt);
+  if (vNum(contentDis, /\√\d+/g) != null) {
+    // console.log(true);
+    contentDis = myFuncStrToSq(contentDis);
+  }
+  // console.log(contentDis);
+  // contentDis = contentDis.replaceAll(/√\d+/g, toSqrt);
   // console.log(contentDis.replaceAll(/√\d+/g, ));
   try {
     let result = eval(contentDis);
@@ -83,13 +112,34 @@ function equalDis() {
   }
 }
 buttons.forEach((element) => {
-  element.addEventListener('click', (event) => {
+  element.addEventListener('click', (ev) => {
+    if (ev.target.classList.contains("opM")) {
+      // console.log(display.value);
+      if (vNum(display.value, /\√\d+/g) != null) {
+        // let arrEle = vNum(display.value, /\√\d+/g);
+        // console.log(arrEle);
+        // let cpyEle = vNum(display.value, /\√\d+/g);
+        // let _arr = myFuncRem(arrEle, /\√/g, 'rmSq(');
+        // console.log(_arr);
+        // myFuncRmDis(display.value, cpyEle, _arr);
+        // let _s = myFuncRmDis(display.value, cpyEle, _arr);
+        display.value = myFuncStrToSq(display.value);
+      }
+    }
     switch (element.id) {
       case "=":
-        if (vNum(display.value, /\d+√/g) != null) {
+        if (vNum(display.value, /\d+\√/g) != null) {
           alert(Error('Error'));
           clearDis();
         } else {
+          //console.log(display.value);
+          //console.log(vNum(display.value, /\√\d+(\+|\-|\x|\÷|\²)*/g));
+          //let arrEle = vNum(display.value, /\√\d+/g);
+          //console.log(arrEle);
+          //let _s = arrEle.join("");
+          //console.log(_s.length);
+          //console.log(myFuncReplDis(display.value, /\√\d+(\+|\-|\x|\÷|\²)*/g, '**.5'));
+          //console.log(myFuncRem(display.value, vNum(display.value, /\√\d+(\+|\-|\x|\÷|\²)*/g), ['**.5']));
           equalDis();
         }
         break;
