@@ -96,26 +96,46 @@ function to_m_discont(content) {
   // console.log(content);
   return content;
 }
+function myFuncRmPi(cont) {
+  let _to_pi = Number(Math.PI.toFixed(9));
+  if (vNum(cont, /\d+\π/g) != null) {
+    // console.log("object1");
+    cont = cont.replace(/\π/g, `*${_to_pi}`);
+  } else if (vNum(cont, /\π\d+/g) != null) {
+    // console.log("object2");
+    cont = cont.replace(/\π/g, `${_to_pi}*`);
+  } else {
+    // console.log("object3");
+    cont = cont.replace(/\π/g, _to_pi);
+  }
+  return cont;
+}
 function equalDis() {
-  let contentDis = display.value, to_dis = 0;
+  let contentDis = display.value, to_dis = 0, to_pi = '';
   // let numSqrt = vNum(contentDis, /√\d+/g).map(x => x.replace('√', ''));
   // numSqrt = numSqrt.map(x => Math.sqrt(x));
-  // console.log(numSqrt);
+  // console.log(to_pi);
   to_dis = to_m_discont(contentDis);
-  // console.log(to_dis);
+  to_pi = myFuncRmPi(contentDis);
+  // console.log(to_pi);
   // console.log(contentDis);
   contentDis = contentDis.replaceAll(/÷/g, '/');
   contentDis = contentDis.replaceAll(/x/g, '*');
   contentDis = contentDis.replaceAll(/²/g, '**2');
   contentDis = contentDis.replaceAll(/\d+%of\d+/g, to_dis);
+  // contentDis = contentDis.replaceAll(/\π/g, to_pi);
   // contentDis = to_m_discont(contentDis);
   //toSqrt = myFuncReplDis(contentDis, /√/g, '**.5');
   //console.log(toSqrt);
-  // console.log(vNum(contentDis, /√\d+/g));
+  // console.log(vNum(contentDis, /\π/g));
   // console.log(contentDis);
   if (vNum(contentDis, /\√\d+/g) != null) {
     // console.log(true);
     contentDis = myFuncStrToSq(contentDis);
+  }
+  if (vNum(contentDis, /\π/g) != null) {
+    // console.log(true);
+    contentDis = to_pi;
   }
   // console.log(contentDis);
   // contentDis = contentDis.replaceAll(/√\d+/g, toSqrt);

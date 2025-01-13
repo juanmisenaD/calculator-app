@@ -1,7 +1,11 @@
+:root {
+  --color_1: #da6d14;
+  --color_2: #b9e222;
+}
 body {
   text-align: center;
   margin: 0;
-  background: #da6d14;
+  background: var(--color_1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,7 +32,10 @@ body {
   box-sizing: border-box;
 }
 .operator {
-  color: #da6d14;
+  color: var(--color_1);
+}
+.func {
+  color: var(--color_2);
 }
 #ac {
   color: #219ebc;
@@ -46,6 +53,7 @@ button {
   float: left;
   background-color: rgb(13, 27, 42);
   box-shadow: -1px 1px 30px -5px rgba(0,0,0,.19);
+  color: #e0e1dd;
 }
 button:hover {
   cursor: pointer;
